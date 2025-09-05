@@ -222,9 +222,7 @@ Strong positive correlation — longer rides directly drive higher booking value
 # 📈 Visualizations (Excel)
 
 📊 Example chart of **hourly ride distribution** (saved as PNG/JPEG).
-[Hourly Ride Distribution](Charts/Hour-Cancellations-trend.jpg)
-
-
+[![Hourly Ride Distribution](Charts/Hour-Cancellations-trend.jpg)](Charts/Hour-Cancellations-trend.jpg)
 ---
 
 # ✅ Key Takeaways
