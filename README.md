@@ -15,7 +15,7 @@ The goal is to extract insights on **customer behavior, driver performance, reve
 
 ---
 
-# 📊 Analysis & Insights
+# 📊 Example Analysis & Insights Using Querries from PostgreSQL
 
 ## 1️⃣ Business Overview
 **Code:**
@@ -31,14 +31,15 @@ WITH ride_metrics AS (
 SELECT * FROM ride_metrics;
 ````
 
-**Output:**
+**Output(1 Row):**
 
-| total\_rides | completed\_rides | cancelled\_rides | incomplete\_rides |
-| ------------ | ---------------- | ---------------- | ----------------- |
-| 5000         | 4200             | 600              | 200               |
+| ride_date  | ride_time | booking_id   | booking_status   |
+|------------|-----------|--------------|------------------|
+| 2024-03-23 | 12:29:38  | CNR5884300   | No Driver Found  |
+
 
 **Insight:**
-Most rides were completed (\~84%), cancellations (\~12%), and incomplete rides (\~4%).
+Most rides were completed at (\~62%) and it had a cancellation rate of (\~25%).
 
 ---
 
@@ -56,168 +57,19 @@ ORDER BY total_spent DESC
 LIMIT 10;
 ```
 
-**Output:**
+**Output(First 3 Rows):**
 
 | customer\_id | total\_spent |
 | ------------ | ------------ |
-| CUST102      | 15000        |
-| CUST099      | 12000        |
-| CUST201      | 11000        |
+| CUST102      | 4987         |
+| CUST099      | 4722         |
+| CUST201      | 4277         |
 
 **Insight:**
 A few loyal customers contribute significantly to revenue — potential for targeted loyalty programs.
 
 ---
 
-## 3️⃣ Driver Performance
-
-**Code:**
-
-```sql
-SELECT 
-    vehicle_type,
-    ROUND(AVG(driver_ratings), 2) AS avg_driver_rating
-FROM india_riders
-GROUP BY vehicle_type;
-```
-
-**Output:**
-
-| vehicle\_type | avg\_driver\_rating |
-| ------------- | ------------------- |
-| Sedan         | 4.8                 |
-| Mini          | 4.5                 |
-| Auto          | 4.2                 |
-
-**Insight:**
-Drivers with sedans consistently receive higher ratings — could signal better ride comfort or service quality.
-
----
-
-## 4️⃣ Revenue Analysis
-
-**Code:**
-
-```sql
-SELECT
-    DATE_TRUNC('month', ride_date) AS month,
-    SUM(booking_value) AS monthly_revenue
-FROM india_riders
-GROUP BY month
-ORDER BY month;
-```
-
-**Output:**
-
-| month      | monthly\_revenue |
-| ---------- | ---------------- |
-| 2024-01-01 | 120000           |
-| 2024-02-01 | 132500           |
-| 2024-03-01 | 141000           |
-
-**Insight:**
-Steady revenue growth month over month — demand is rising.
-
----
-
-## 5️⃣ Operational Insights
-
-**Code:**
-
-```sql
-SELECT
-    EXTRACT(HOUR FROM ride_time) AS hour,
-    COUNT(*) AS ride_count
-FROM india_riders
-GROUP BY hour
-ORDER BY hour;
-```
-
-**Output:**
-
-| hour | ride\_count |
-| ---- | ----------- |
-| 8    | 400         |
-| 9    | 520         |
-| 18   | 800         |
-
-**Insight:**
-Peak demand is during morning (8–9 AM) and evening (6 PM) commute hours.
-
----
-
-## 6️⃣ Cancellation Insights
-
-**Code:**
-
-```sql
-SELECT
-    cancelled_by_customer,
-    cancelled_by_driver,
-    COUNT(*) AS cancel_count
-FROM india_riders
-WHERE booking_status <> 'Completed'
-GROUP BY cancelled_by_customer, cancelled_by_driver;
-```
-
-**Output:**
-
-| cancelled\_by\_customer | cancelled\_by\_driver | cancel\_count |
-| ----------------------- | --------------------- | ------------- |
-| TRUE                    | FALSE                 | 350           |
-| FALSE                   | TRUE                  | 250           |
-
-**Insight:**
-Customers cancel slightly more often than drivers — potential issue with wait times or trust.
-
----
-
-## 7️⃣ Payments & Ratings
-
-**Code:**
-
-```sql
-SELECT
-    payment_method,
-    ROUND(AVG(customer_ratings), 2) AS avg_rating,
-    ROUND(AVG(booking_value), 2) AS avg_booking_value
-FROM india_riders
-GROUP BY payment_method;
-```
-
-**Output:**
-
-| payment\_method | avg\_rating | avg\_booking\_value |
-| --------------- | ----------- | ------------------- |
-| Card            | 4.6         | 320                 |
-| Wallet          | 4.5         | 290                 |
-| Cash            | 4.2         | 250                 |
-
-**Insight:**
-Digital payments correlate with slightly higher ratings and higher average booking values.
-
----
-
-## 8️⃣ Exploratory Questions
-
-**Code:**
-
-```sql
-SELECT
-    CORR(ride_distance, booking_value) AS distance_cost_correlation
-FROM india_riders;
-```
-
-**Output:**
-
-| distance\_cost\_correlation |
-| --------------------------- |
-| 0.78                        |
-
-**Insight:**
-Strong positive correlation — longer rides directly drive higher booking values.
-
----
 
 # 📈 Visualizations (Excel)
 
