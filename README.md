@@ -1,10 +1,4 @@
-Perfect 👍 I’ll redo your README in the **same clean style** but expanded so it includes **all 8 goals**. This way you’ll have a professional skeleton, and you can just drop in your own queries, outputs, and insights as you finish them.
 
-Here’s the full version:
-
----
-
-````md
 # 🚖 Uber Data From India
 
 ## 📂 Dataset
