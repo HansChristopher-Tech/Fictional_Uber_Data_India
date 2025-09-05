@@ -8,9 +8,7 @@ Business Overview
 
 */
 --checks the whole table
-SELECT *
-FROM india_riders
-LIMIT 10
+
 
 -- Goal 1
 WITH ride_metrics AS (
@@ -22,7 +20,20 @@ WITH ride_metrics AS (
     FROM india_riders
 )
 
+SELECT *
+FROM india_riders
+LIMIT 10
+
 --Goal 2
+
+WITH ride_metrics AS (
+    SELECT
+        COUNT(*) AS total_rides,
+        COUNT(*) FILTER (WHERE booking_status = 'Completed') AS completed_rides,
+        COUNT(*) FILTER (WHERE cancelled_by_customer = true OR cancelled_by_driver = true) AS cancelled_rides,
+        COUNT(*) FILTER (WHERE incomplete_rides = true) AS incomplete_rides
+    FROM india_riders
+)
 SELECT
     ROUND((cancelled_rides::NUMERIC / total_rides) * 100, 2) AS cancellation_rate_pct,
     ROUND((completed_rides::NUMERIC / total_rides) * 100, 2) AS completion_rate_pct
